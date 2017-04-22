@@ -20,11 +20,10 @@ import java.util.Date;
 import java.util.Random;
 
 /**
- * Created by Dell on 21/04/2017.
+ * Created by Dell on 08/04/2017.
  */
-public class Utils extends BasePage {
-
-
+public class Utils extends BasePage
+{
     // re-usable method for typing text into element (instead of sendKeys())
     public static void typeText(By by, String text){
         //clearing any existing text from the element
@@ -253,6 +252,3 @@ public class Utils extends BasePage {
     }
 
 }
-
-
-

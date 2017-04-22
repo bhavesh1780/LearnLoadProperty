@@ -10,7 +10,8 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 public class BrowserSelector extends BasePage {
 
     LoadProp loadProp = new LoadProp();
-    String browser = loadProp.getProperty("browser");
+//    String browser = loadProp.getProperty("browser");
+    String browser = System.getProperty("browser");
 
 
     public void selectBrowser(){
