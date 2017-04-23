@@ -17,6 +17,7 @@ public class BaseTest extends BasePage
    @BeforeMethod
     public void openBrowser(){
        browserSelector.selectBrowser();
+       driver.manage().deleteAllCookies();
        driver.manage().window().maximize();
        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
        driver.get("http://demo.nopcommerce.com/");

@@ -3,6 +3,7 @@ package com.LoadProperty;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.remote.DesiredCapabilities;
 
 /**
  * Created by Dell on 22/04/2017.
@@ -10,9 +11,11 @@ import org.openqa.selenium.ie.InternetExplorerDriver;
 public class BrowserSelector extends BasePage {
 
     LoadProp loadProp = new LoadProp();
-//    String browser = loadProp.getProperty("browser");
-    String browser = System.getProperty("browser");
-
+    //This statement will run from Intellij
+    //    String browser = loadProp.getProperty("browser");
+    //This statement will run with Jenkins
+//    String browser = System.getProperty("browser");
+    String browser= "ie";
 
     public void selectBrowser(){
 
@@ -25,7 +28,12 @@ public class BrowserSelector extends BasePage {
 
         }else if (browser.equalsIgnoreCase("ie")){
             System.setProperty("webdriver.ie.driver","C:\\Users\\Dell\\IdeaProjects\\LearnLoadProperty\\src\\test\\Resources\\BrowserDriver\\IEDriverServer.exe");
-                 driver = new InternetExplorerDriver();
+            DesiredCapabilities ieCapabilities = DesiredCapabilities.internetExplorer();
+
+//            DesiredCapabilities caps = DesiredCapabilities.internetExplorer(); caps.setCapability("ignoreZoomSetting", true);
+//            caps.setCapability("nativeEvents",false);
+             driver = new  InternetExplorerDriver();
+
         }else {
             System.out.println("Browser Name is Wrong");
         }

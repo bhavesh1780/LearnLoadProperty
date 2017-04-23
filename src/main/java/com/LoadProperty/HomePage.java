@@ -9,11 +9,18 @@ import org.testng.Assert;
 public class HomePage extends Utils {
 
     public void clickOnRegisterButton(){
-        // click on 'Register' button from top menu bar
+//        // click on 'Register' button from top menu bar
+////        JavascriptExecutor js =(JavascriptExecutor) driver;
+////        WebElement element=driver.findElement(By.xpath("//a[@class=\"ico-register\"]"));
+////        element.click();
+//        waitTillElementIsClickable(By.xpath("//a[@class=\"ico-register\"]"),5);
         clickOnElement(By.xpath("//a[@class=\"ico-register\"]"));
-        // Verify if user is navigated to registration page successfully
+////        clickOnElement(By.linkText("Register"));
+////        driver.findElement(By.linkText("/register")).sendKeys(Keys.ENTER);
+////        driver.findElement(By.xpath("/html/body/div[6]/div[1]/div[1]/div[2]/div[1]/ul/li[1]/a")).click();
+//        // Verify if user is navigated to registration page successfully
         Assert.assertEquals("Register", getTextFromElement(By.xpath("//div[@class='page-title']/h1")) );
-
+//
     }
 
     public void clickOnLogInButton(){
