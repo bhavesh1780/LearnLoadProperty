@@ -1,5 +1,6 @@
 package com.LoadProperty;
 
+import com.google.common.collect.Ordering;
 import org.apache.commons.io.FileUtils;
 import org.openqa.selenium.*;
 import org.openqa.selenium.interactions.Actions;
@@ -7,6 +8,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.Select;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
+import org.testng.asserts.SoftAssert;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -16,8 +18,8 @@ import java.io.File;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Random;
+import java.util.*;
+import java.util.List;
 
 /**
  * Created by Dell on 08/04/2017.
@@ -88,7 +90,7 @@ public class Utils extends BasePage
         wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 
-    //Reusable boolean method for verifying  if element is present
+    //Reusable boolean method for verifying  if element is present or Displayed
     public static boolean isElementPresent(By by){
         try{
             return driver.findElement(by).isDisplayed();
@@ -118,6 +120,8 @@ public class Utils extends BasePage
         }
     }
 
+    //Explicit wait Methods
+
     //Reusable method for Explicit wait until element is clickable
     public static void waitTillElementIsClickable(By by,int seconds){
         WebDriverWait wait = new WebDriverWait(driver,seconds);
@@ -136,7 +140,7 @@ public class Utils extends BasePage
         wait.until(ExpectedConditions.elementToBeSelected(by));
     }
 
-//    //Reusable method for Explicit wait until polling element till its visible
+    //    //Reusable method for  until polling element till its visible
 //    public static void explicitPollingWaitElementTillVisible(By by,int seconds){
 //        WebDriverWait wait = new WebDriverWait(driver,seconds);
 ////        wait.until(ExpectedConditions.(by));
@@ -249,6 +253,138 @@ public class Utils extends BasePage
         String productName = getTextFromElement(productNameby);
         System.out.println("The Price for " + productName + " = " + converted_price);
 
+    }
+
+    //Reusable method for Soft Assert Method
+    public static void softAssert(By by, String expectedText, String message){
+        SoftAssert assertion = new SoftAssert();
+        assertion.assertEquals(getTextFromElement(by), expectedText, message);
+        assertion.assertAll();
+    }
+
+    //Reusable method for Foft Assert for value
+    public static void softAssert(double actual, double expected, String message){
+        SoftAssert assertion = new SoftAssert();
+        assertion.assertEquals(actual, expected, message);
+        assertion.assertAll();
+    }
+
+    //Reusable method for product sortBy position
+    public static void sortByPosition(String position){
+        if(position.equalsIgnoreCase("Price: Low to High")){
+            selectText(By.id("products-orderby"),"Price: Low to High");
+        }else if (position.equalsIgnoreCase("Name: A to Z")){
+            selectText(By.id("products-orderby"),"Name: A to Z");
+        }else if (position.equalsIgnoreCase("Name: Z to A")){
+            selectText(By.id("products-orderby"),"Name: Z to A");
+        }else if (position.equalsIgnoreCase("Created on")){
+            selectText(By.id("products-orderby"),"Created on");
+        }
+    }
+
+    //Reusable method for number of products to Display per Page
+    public static void displayBy(int x){
+        if(x == 3){
+            selectText(By.id("product-pagesize"),"3");
+        }else if(x == 6){
+            selectText(By.id("product-pagesize"),"6");
+        }else if(x == 9){
+            selectText(By.id("product-pagesize"),"9");
+        }
+    }
+
+    //Reusable method to check product is arrange in ascending or Low to High
+    public static boolean ascendingOrLowToHigh(By by){
+        List<WebElement> productNames_WebElement = driver.findElements(by);
+        List<String> product_names = new ArrayList<String>();
+
+        for(WebElement e : productNames_WebElement){
+            String s = e.getText();
+            product_names.add(s);
+        }
+        boolean isSorted = Ordering.natural().isOrdered(product_names);
+        return isSorted;
+    }
+
+    //Reusable method to check product is arrange in Descending or High to Low
+    public static boolean decendingOrHighToLow(By by){
+        List<WebElement> productNames_WebElement = driver.findElements(by);
+        List<String> product_names = new ArrayList<String>();
+
+        for(WebElement e : productNames_WebElement){
+            String s = e.getText();
+            product_names.add(s);
+        }
+        boolean isSorted = !(Ordering.natural().isOrdered(product_names));
+        return isSorted;
+    }
+
+    //Reusable method for Assert that Products are Display per page
+    public static boolean assertDisplayPerPage(By by, int perPage){
+        boolean isDisplay = false;
+        List<WebElement> productNames_WebElement = driver.findElements(by);
+        List<String> product_names = new ArrayList<String>();
+
+        for(WebElement e : productNames_WebElement){
+            String s = e.getText();
+            product_names.add(s);
+        }
+        if (perPage == product_names.size()){
+            isDisplay = true;
+        }
+        return isDisplay;
+    }
+
+    //Reusable method to accept alert
+    public static void alertAccept(){
+        Alert alert = driver.switchTo().alert();
+        alert.accept();
+    }
+
+    //Reusable method for Assert True for boolean condition
+    public static void assertTrueCondition(String locator, String type, String contains, String message){
+
+        type = type.toLowerCase();
+        if(type.equals("id")){
+            Assert.assertTrue(getTextFromElement(By.id(locator)).contains(contains), message);
+        } else if(type.equals("xpath")){
+            Assert.assertTrue(getTextFromElement(By.xpath(locator)).contains(contains), message);
+        }else if (type.equals("css")){
+            Assert.assertTrue(getTextFromElement(By.cssSelector(locator)).contains(contains), message);
+        }else if (type.equals("linktext")){
+            Assert.assertTrue(getTextFromElement(By.linkText(locator)).contains(contains), message);
+        }else if(type.equals("partiallinktext")){
+            Assert.assertTrue(getTextFromElement(By.partialLinkText(locator)).contains(contains), message);
+        }else if(type.equals("tag")){
+            Assert.assertTrue(getTextFromElement(By.tagName(locator)).contains(contains), message);
+        }else if(type.equals("name")){
+            Assert.assertTrue(getTextFromElement(By.name(locator)).contains(contains), message);
+        }else if(type.equals("class")){
+            Assert.assertTrue(getTextFromElement(By.className(locator)).contains(contains), message);
+        }else {
+            System.out.println("Locater type is Invalid");
+        }
+    }
+
+    //Reusable method for Assert True IsSelected
+    public static void assertTrueIsSelected(By by, String message){
+
+        Assert.assertTrue(driver.findElement(by).isSelected(), message);
+    }
+
+    //Reusable method to Refresh the Web page
+    public static void refresh(){
+
+        driver.navigate().refresh();
+    }
+
+    //Reusable method to Close Window Browser
+    public static void close(){
+        driver.close();
+    }
+
+    public static void quit(){
+        driver.quit();
     }
 
 }
