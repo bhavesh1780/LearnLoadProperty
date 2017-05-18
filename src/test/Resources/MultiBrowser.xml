@@ -1,0 +1,21 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="MultiBrowser Test" parallel="tests">
+    <test name="FriefoxTest">
+        <parameter name="browser" value="firefox"/>
+        <classes>
+            <class name="com.LoadProperty.TestSuit"/>
+        </classes>
+    </test>
+    <test name="Chrome">
+    <parameter name="browser" value="chrome"/>
+        <classes>
+            <class name="com.LoadProperty.TestSuit"/>
+        </classes>
+    </test>
+    <test name="ie">
+        <parameter name="browser" value="ie"/>
+        <classes>
+            <class name="com.LoadProperty.TestSuit"/>
+        </classes>
+    </test>
+</suite>

@@ -15,9 +15,9 @@ public class BrowserSelector extends BasePage {
     //    String browser = loadProp.getProperty("browser");
     //This statement will run with Jenkins
 //    String browser = System.getProperty("browser");
-    String browser= "ie";
+//    String browser= "ie";
 
-    public void selectBrowser(){
+    public void selectBrowser(String browser){
 
         if (browser.equalsIgnoreCase("firefox")){
             driver= new FirefoxDriver();
