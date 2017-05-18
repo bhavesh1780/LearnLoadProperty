@@ -14,7 +14,7 @@ public class BrowserSelector extends BasePage {
     //This statement will run from Intellij
     //    String browser = loadProp.getProperty("browser");
     //This statement will run with Jenkins
-//    String browser = System.getProperty("browser");
+    String browser = System.getProperty("browser");
 //    String browser= "ie";
 
     public void selectBrowser(String browser){
